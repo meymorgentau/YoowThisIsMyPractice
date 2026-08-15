@@ -15,6 +15,9 @@ public class CactusSpawner : MonoBehaviour
     public float интервалУскорения = 5f;
     public float максимальнаяСкорость = 20f;
 
+    [Header("Игровая поверхность")]
+    public GroundMover земля;
+
     private float таймер = 0f;
     private float интервалСпавна;
     private float таймерУскорения = 0f;
@@ -22,6 +25,7 @@ public class CactusSpawner : MonoBehaviour
     void Start()
     {
         интервалСпавна = Random.Range(минимальныйИнтервал, максимальныйИнтервал);
+        земля.скорость = скоростьДвижения;
     }
 
     void Update()
@@ -46,6 +50,8 @@ public class CactusSpawner : MonoBehaviour
             {
                 скоростьДвижения = максимальнаяСкорость;
             }
+
+            земля.скорость = скоростьДвижения;
         }
     }
 

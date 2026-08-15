@@ -5,13 +5,15 @@ public class DinoController : MonoBehaviour
     [Header("Настройки прыжка")]
     public float силаПрыжка = 10f;
 
-    private Rigidbody2D физика;
-    private bool наЗемле = false;
+   private Rigidbody2D физика;
+private bool наЗемле = false;
+private GameOverManager менеджерОкончания;
 
     void Start()
-    {
-        физика = GetComponent<Rigidbody2D>();
-    }
+{
+    физика = GetComponent<Rigidbody2D>();
+    менеджерОкончания = FindObjectOfType<GameOverManager>();
+}
 
     void Update()
     {
@@ -30,17 +32,16 @@ public class DinoController : MonoBehaviour
         }
     }
 
-    void OnCollisionEnter2D(Collision2D столкновение)
+   void OnCollisionEnter2D(Collision2D столкновение)
+{
+    if (столкновение.gameObject.name == "Ground")
     {
-        if (столкновение.gameObject.name == "Ground")
-        {
-            наЗемле = true;
-        }
-
-        if (столкновение.gameObject.GetComponent<CactusMover>() != null)
-        {
-            физика.linearVelocity = Vector2.zero;
-            Time.timeScale = 0f;
-        }
+        наЗемле = true;
     }
+
+    if (столкновение.gameObject.CompareTag("Cactus"))
+    {
+        менеджерОкончания.ПоказатьМеню();
+    }
+}
 }

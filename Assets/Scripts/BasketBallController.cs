@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class BasketBallController : MonoBehaviour
 {
-    [SerializeField] private float силаБроска = 2f;
+    [SerializeField] private float силаБроска = 100f;
 
     private Rigidbody rb;
     private Vector3 начальнаяПозиция;
@@ -53,13 +53,16 @@ public class BasketBallController : MonoBehaviour
         }
     }
 
-    private void ВернутьМяч()
+    public void ВернутьМяч()
     {
-        rb.isKinematic = true;
+        rb.isKinematic = false;
+
         rb.linearVelocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
 
         transform.position = начальнаяПозиция;
+
+        rb.isKinematic = true;
 
         мячЗапущен = false;
     }

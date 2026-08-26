@@ -52,18 +52,23 @@ public class DinoController : MonoBehaviour
     }
 
     void OnCollisionEnter2D(Collision2D столкновение)
+{
+    if (столкновение.gameObject.name == "Ground")
     {
-        if (столкновение.gameObject.name == "Ground")
-        {
-            наЗемле = true;
-            количествоПрыжков = 0;
+        наЗемле = true;
+        количествоПрыжков = 0;
 
-            аниматор.SetBool("Бежит", true);
-        }
-
-        if (столкновение.gameObject.CompareTag("Cactus"))
-        {
-            менеджерОкончания.ПоказатьМеню();
-        }
+        аниматор.SetBool("Бежит", true);
     }
+
+    if (столкновение.gameObject.CompareTag("Cactus"))
+    {
+        менеджерОкончания.ПоказатьМеню();
+    }
+
+    if (столкновение.gameObject.CompareTag("Bird"))
+    {
+        менеджерОкончания.ПоказатьМеню();
+    }
+}
 }

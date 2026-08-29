@@ -401,7 +401,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   "\u0441\u0438\u043B\u0430\u041F\u0440\u044B\u0436\u043A\u0430": 20
-  "\u043C\u043D\u043E\u0436\u0438\u0442\u0435\u043B\u044C\u0412\u0442\u043E\u0440\u043E\u0433\u043E\u041F\u0440\u044B\u0436\u043A\u0430": 0.75
+  "\u043C\u043D\u043E\u0436\u0438\u0442\u0435\u043B\u044C\u0412\u0442\u043E\u0440\u043E\u0433\u043E\u041F\u0440\u044B\u0436\u043A\u0430": 1
 --- !u!95 &123036298
 Animator:
   serializedVersion: 7
@@ -472,6 +472,8 @@ MonoBehaviour:
   "\u043C\u0438\u043D\u0438\u043C\u0430\u043B\u044C\u043D\u044B\u0439\u0418\u043D\u0442\u0435\u0440\u0432\u0430\u043B": 3
   "\u043C\u0430\u043A\u0441\u0438\u043C\u0430\u043B\u044C\u043D\u044B\u0439\u0418\u043D\u0442\u0435\u0440\u0432\u0430\u043B": 6
   "\u0432\u044B\u0441\u043E\u0442\u0430\u041F\u0442\u0438\u0447\u043A\u0438": 0.5
+  "\u0441\u043A\u043E\u0440\u043E\u0441\u0442\u044C\u0414\u0432\u0438\u0436\u0435\u043D\u0438\u044F": 10
+  "\u0443\u0441\u043A\u043E\u0440\u0435\u043D\u0438\u0435": 0.1
 --- !u!1 &447424973
 GameObject:
   m_ObjectHideFlags: 0
@@ -657,7 +659,7 @@ Camera:
   far clip plane: 1000
   field of view: 34
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 4.7
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -907,7 +909,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 97
+  m_fontStyle: 32
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -1182,7 +1184,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 18.659729, y: -1.1627197}
+  m_AnchoredPosition: {x: 29.65976, y: -50.062714}
   m_SizeDelta: {x: 79.3194, y: 44.32541}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &954745218
@@ -1257,7 +1259,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -78.4, y: -16.6}
+  m_AnchoredPosition: {x: -129, y: -80}
   m_SizeDelta: {x: 200, y: 38.675}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &980387367
@@ -1282,8 +1284,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\u0421\u0427\u0415\u0422"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 66f50db668ffea543b9417d77c317d24, type: 2}
+  m_sharedMaterial: {fileID: 4613017966952003652, guid: 66f50db668ffea543b9417d77c317d24, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1307,8 +1309,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 25
-  m_fontSizeBase: 25
+  m_fontSize: 15
+  m_fontSizeBase: 15
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1673,7 +1675,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 321.59995, y: 155.28249}
+  m_AnchoredPosition: {x: 271, y: 120}
   m_SizeDelta: {x: 200, y: 48.645}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1255286122
@@ -1698,8 +1700,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\u0420\u0435\u043A\u043E\u0440\u0434"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 66f50db668ffea543b9417d77c317d24, type: 2}
+  m_sharedMaterial: {fileID: 4613017966952003652, guid: 66f50db668ffea543b9417d77c317d24, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1723,8 +1725,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 25
-  m_fontSizeBase: 25
+  m_fontSize: 15
+  m_fontSizeBase: 15
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1809,7 +1811,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -12.659693, y: 108.46271}
+  m_AnchoredPosition: {x: -7, y: 101}
   m_SizeDelta: {x: 690.821, y: 47.3179}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1591571765
@@ -1834,8 +1836,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\u041A\u041E\u041D\u0415\u0426"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 66f50db668ffea543b9417d77c317d24, type: 2}
+  m_sharedMaterial: {fileID: 4613017966952003652, guid: 66f50db668ffea543b9417d77c317d24, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2054,7 +2056,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 1
+  m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535

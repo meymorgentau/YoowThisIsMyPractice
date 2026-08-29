@@ -47,28 +47,33 @@ public class DinoController : MonoBehaviour
             количествоПрыжков++;
 
             наЗемле = false;
+
+            // Переключаем анимацию на прыжок
             аниматор.SetBool("Бежит", false);
+            аниматор.SetBool("Прыгает", true);
         }
     }
 
     void OnCollisionEnter2D(Collision2D столкновение)
-{
-    if (столкновение.gameObject.name == "Ground")
     {
-        наЗемле = true;
-        количествоПрыжков = 0;
+        if (столкновение.gameObject.name == "Ground")
+        {
+            наЗемле = true;
+            количествоПрыжков = 0;
 
-        аниматор.SetBool("Бежит", true);
-    }
+            // Возвращаем анимацию бега
+            аниматор.SetBool("Прыгает", false);
+            аниматор.SetBool("Бежит", true);
+        }
 
-    if (столкновение.gameObject.CompareTag("Cactus"))
-    {
-        менеджерОкончания.ПоказатьМеню();
-    }
+        if (столкновение.gameObject.CompareTag("Cactus"))
+        {
+            менеджерОкончания.ПоказатьМеню();
+        }
 
-    if (столкновение.gameObject.CompareTag("Bird"))
-    {
-        менеджерОкончания.ПоказатьМеню();
+        if (столкновение.gameObject.CompareTag("Bird"))
+        {
+            менеджерОкончания.ПоказатьМеню();
+        }
     }
-}
 }

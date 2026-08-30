@@ -51,6 +51,12 @@ public class DinoController : MonoBehaviour
             // Переключаем анимацию на прыжок
             аниматор.SetBool("Бежит", false);
             аниматор.SetBool("Прыгает", true);
+
+            // Если это второй прыжок — включаем его анимацию
+            if (количествоПрыжков == 2)
+            {
+                аниматор.SetBool("ВторойПрыжок", true);
+            }
         }
     }
 
@@ -63,6 +69,7 @@ public class DinoController : MonoBehaviour
 
             // Возвращаем анимацию бега
             аниматор.SetBool("Прыгает", false);
+            аниматор.SetBool("ВторойПрыжок", false);
             аниматор.SetBool("Бежит", true);
         }
 

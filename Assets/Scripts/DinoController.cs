@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class DinoController : MonoBehaviour
 {
@@ -8,6 +9,9 @@ public class DinoController : MonoBehaviour
     [Header("Настройки двойного прыжка")]
     public float множительВторогоПрыжка = 0.5f;
 
+    [Header("Анимация проигрыша")]
+    public DeathAnimation анимацияСмерти;
+
     private Rigidbody2D физика;
     private bool наЗемле = false;
     private GameOverManager менеджерОкончания;
@@ -15,6 +19,8 @@ public class DinoController : MonoBehaviour
 
     private int количествоПрыжков = 0;
     private int максимальноеКоличествоПрыжков = 2;
+
+    private bool проигрыш = false;
 
     void Start()
     {
@@ -25,6 +31,9 @@ public class DinoController : MonoBehaviour
 
     void Update()
     {
+        if (проигрыш)
+            return;
+
         if (Input.GetMouseButtonDown(0))
         {
             ПопытатьсяПрыгнуть();
@@ -48,11 +57,9 @@ public class DinoController : MonoBehaviour
 
             наЗемле = false;
 
-            // Переключаем анимацию на прыжок
             аниматор.SetBool("Бежит", false);
             аниматор.SetBool("Прыгает", true);
 
-            // Если это второй прыжок — включаем его анимацию
             if (количествоПрыжков == 2)
             {
                 аниматор.SetBool("ВторойПрыжок", true);
@@ -62,12 +69,14 @@ public class DinoController : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D столкновение)
     {
+        if (проигрыш)
+            return;
+
         if (столкновение.gameObject.name == "Ground")
         {
             наЗемле = true;
             количествоПрыжков = 0;
 
-            // Возвращаем анимацию бега
             аниматор.SetBool("Прыгает", false);
             аниматор.SetBool("ВторойПрыжок", false);
             аниматор.SetBool("Бежит", true);
@@ -75,12 +84,51 @@ public class DinoController : MonoBehaviour
 
         if (столкновение.gameObject.CompareTag("Cactus"))
         {
-            менеджерОкончания.ПоказатьМеню();
+            НачатьПроигрыш();
         }
 
         if (столкновение.gameObject.CompareTag("Bird"))
         {
-            менеджерОкончания.ПоказатьМеню();
+            НачатьПроигрыш();
         }
+    }
+
+    void НачатьПроигрыш()
+    {
+        проигрыш = true;
+
+        // Останавливаем физику котика
+        физика.linearVelocity = Vector2.zero;
+        физика.simulated = false;
+
+        // Останавливаем его обычную анимацию
+        аниматор.enabled = false;
+
+        // Получаем SpriteRenderer котика
+        SpriteRenderer спрайтКотика = GetComponent<SpriteRenderer>();
+
+        // Если он есть — скрываем обычного котика
+        if (спрайтКотика != null)
+        {
+            спрайтКотика.enabled = false;
+        }
+
+        // Показываем картинку смерти
+        if (анимацияСмерти != null)
+        {
+            анимацияСмерти.transform.position = transform.position;
+            анимацияСмерти.gameObject.SetActive(true);
+            анимацияСмерти.НачатьПадение();
+        }
+
+        // Через небольшую задержку показываем меню проигрыша
+        StartCoroutine(ПоказатьПроигрыш());
+    }
+
+    IEnumerator ПоказатьПроигрыш()
+    {
+        yield return new WaitForSecondsRealtime(0.7f);
+
+        менеджерОкончания.ПоказатьМеню();
     }
 }

@@ -12,6 +12,9 @@ public class DinoController : MonoBehaviour
     [Header("Анимация проигрыша")]
     public DeathAnimation анимацияСмерти;
 
+    [Header("Частицы приземления")]
+    public ParticleSystem частицыПриземления;
+
     private Rigidbody2D физика;
     private bool наЗемле = false;
     private GameOverManager менеджерОкончания;
@@ -57,9 +60,11 @@ public class DinoController : MonoBehaviour
 
             наЗемле = false;
 
+            // Переключаем анимацию на прыжок
             аниматор.SetBool("Бежит", false);
             аниматор.SetBool("Прыгает", true);
 
+            // Если это второй прыжок — включаем его анимацию
             if (количествоПрыжков == 2)
             {
                 аниматор.SetBool("ВторойПрыжок", true);
@@ -72,21 +77,37 @@ public class DinoController : MonoBehaviour
         if (проигрыш)
             return;
 
+        // Столкновение с землёй
         if (столкновение.gameObject.name == "Ground")
         {
+            // Проверяем, действительно ли котик прыгал
+            bool былПрыжок = количествоПрыжков > 0;
+
             наЗемле = true;
             количествоПрыжков = 0;
 
+            // Возвращаем анимацию бега
             аниматор.SetBool("Прыгает", false);
             аниматор.SetBool("ВторойПрыжок", false);
             аниматор.SetBool("Бежит", true);
+
+            // Частицы только после прыжка
+            if (былПрыжок && частицыПриземления != null)
+            {
+                ContactPoint2D точкаСтолкновения = столкновение.GetContact(0);
+
+                частицыПриземления.transform.position = точкаСтолкновения.point;
+                частицыПриземления.Play();
+            }
         }
 
+        // Столкновение с кактусом
         if (столкновение.gameObject.CompareTag("Cactus"))
         {
             НачатьПроигрыш();
         }
 
+        // Столкновение с птицей
         if (столкновение.gameObject.CompareTag("Bird"))
         {
             НачатьПроигрыш();
@@ -107,7 +128,7 @@ public class DinoController : MonoBehaviour
         // Получаем SpriteRenderer котика
         SpriteRenderer спрайтКотика = GetComponent<SpriteRenderer>();
 
-        // Если он есть — скрываем обычного котика
+        // Скрываем обычного котика
         if (спрайтКотика != null)
         {
             спрайтКотика.enabled = false;
@@ -127,7 +148,7 @@ public class DinoController : MonoBehaviour
 
     IEnumerator ПоказатьПроигрыш()
     {
-        yield return new WaitForSecondsRealtime(0.7f);
+        yield return new WaitForSecondsRealtime(1.5f);
 
         менеджерОкончания.ПоказатьМеню();
     }

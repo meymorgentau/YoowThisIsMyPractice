@@ -15,6 +15,12 @@ public class DinoController : MonoBehaviour
     [Header("Частицы приземления")]
     public ParticleSystem частицыПриземления;
 
+    [Header("Звуки")]
+    public AudioSource звукПрыжка;
+    public AudioSource звукПриземления;
+    public AudioSource звукУдара;
+    public AudioSource звукМяу;
+
     private Rigidbody2D физика;
     private bool наЗемле = false;
     private GameOverManager менеджерОкончания;
@@ -60,6 +66,21 @@ public class DinoController : MonoBehaviour
 
             наЗемле = false;
 
+            // Проигрываем звук прыжка
+            if (звукПрыжка != null)
+            {
+                звукПрыжка.Play();
+            }
+
+            // При втором прыжке дополнительно проигрываем мяуканье
+            if (количествоПрыжков == 2)
+            {
+                if (звукМяу != null)
+                {
+                    звукМяу.Play();
+                }
+            }
+
             // Переключаем анимацию на прыжок
             аниматор.SetBool("Бежит", false);
             аниматор.SetBool("Прыгает", true);
@@ -91,13 +112,21 @@ public class DinoController : MonoBehaviour
             аниматор.SetBool("ВторойПрыжок", false);
             аниматор.SetBool("Бежит", true);
 
-            // Частицы только после прыжка
-            if (былПрыжок && частицыПриземления != null)
+            // Частицы и звук только после прыжка
+            if (былПрыжок)
             {
-                ContactPoint2D точкаСтолкновения = столкновение.GetContact(0);
+                if (частицыПриземления != null)
+                {
+                    ContactPoint2D точкаСтолкновения = столкновение.GetContact(0);
 
-                частицыПриземления.transform.position = точкаСтолкновения.point;
-                частицыПриземления.Play();
+                    частицыПриземления.transform.position = точкаСтолкновения.point;
+                    частицыПриземления.Play();
+                }
+
+                if (звукПриземления != null)
+                {
+                    звукПриземления.Play();
+                }
             }
         }
 
@@ -117,6 +146,25 @@ public class DinoController : MonoBehaviour
     void НачатьПроигрыш()
     {
         проигрыш = true;
+
+        // Проигрываем звук столкновения
+        if (звукУдара != null)
+        {
+            звукУдара.Play();
+        }
+
+        // Останавливаем фоновую музыку
+        GameObject объектМузыки = GameObject.Find("Музыка");
+
+        if (объектМузыки != null)
+        {
+            AudioSource музыка = объектМузыки.GetComponent<AudioSource>();
+
+            if (музыка != null)
+            {
+                музыка.Stop();
+            }
+        }
 
         // Останавливаем физику котика
         физика.linearVelocity = Vector2.zero;

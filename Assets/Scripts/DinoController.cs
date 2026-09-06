@@ -11,6 +11,12 @@ public class DinoController : MonoBehaviour
     [Header("Настройки двойного прыжка")]
     public float множительВторогоПрыжка = 0.5f;
 
+    [Header("Настройки ИИ")]
+    public float дистанцияОбнаружения = 3f;
+    public float высотаНижнегоЛуча = -0.2f;
+    public float высотаВерхнегоЛуча = 0.5f;
+    public float задержкаМеждуРешениями = 0.4f;
+
     [Header("Анимация проигрыша")]
     public DeathAnimation анимацияСмерти;
 
@@ -33,6 +39,8 @@ public class DinoController : MonoBehaviour
 
     private bool проигрыш = false;
 
+    private float времяПоследнегоРешения = -10f;
+
     void Start()
     {
         физика = GetComponent<Rigidbody2D>();
@@ -45,11 +53,96 @@ public class DinoController : MonoBehaviour
         if (проигрыш)
             return;
 
-        if (!автоматическийРежим && Input.GetMouseButtonDown(0))
+        if (автоматическийРежим)
+        {
+            АнализироватьОбстановку();
+        }
+        else if (Input.GetMouseButtonDown(0))
         {
             ПопытатьсяПрыгнуть();
         }
     }
+
+void АнализироватьОбстановку()
+{
+    Vector2 нижняяТочка = (Vector2)transform.position +
+                          new Vector2(0f, высотаНижнегоЛуча);
+
+    Vector2 верхняяТочка = (Vector2)transform.position +
+                          new Vector2(0f, высотаВерхнегоЛуча);
+
+    RaycastHit2D[] нижниеПопадания = Physics2D.RaycastAll(
+        нижняяТочка,
+        Vector2.right,
+        дистанцияОбнаружения
+    );
+
+    RaycastHit2D[] верхниеПопадания = Physics2D.RaycastAll(
+        верхняяТочка,
+        Vector2.right,
+        дистанцияОбнаружения
+    );
+
+    Debug.DrawRay(
+        нижняяТочка,
+        Vector2.right * дистанцияОбнаружения,
+        Color.red
+    );
+
+    Debug.DrawRay(
+        верхняяТочка,
+        Vector2.right * дистанцияОбнаружения,
+        Color.yellow
+    );
+
+    bool кактусОбнаружен = false;
+    bool пчелаОбнаружена = false;
+
+    foreach (RaycastHit2D попадание in нижниеПопадания)
+    {
+        if (попадание.collider.CompareTag("Cactus"))
+        {
+            кактусОбнаружен = true;
+        }
+
+        if (попадание.collider.CompareTag("Bird"))
+        {
+            пчелаОбнаружена = true;
+        }
+    }
+
+    foreach (RaycastHit2D попадание in верхниеПопадания)
+    {
+        if (попадание.collider.CompareTag("Cactus"))
+        {
+            кактусОбнаружен = true;
+        }
+
+        if (попадание.collider.CompareTag("Bird"))
+        {
+            пчелаОбнаружена = true;
+        }
+    }
+
+ if (пчелаОбнаружена && количествоПрыжков == 1)
+{
+    Debug.Log("ИИ увидел пчелу во время первого прыжка — второй прыжок!");
+
+    ПопытатьсяПрыгнуть();
+
+    времяПоследнегоРешения = Time.time;
+}
+else if ((кактусОбнаружен || пчелаОбнаружена) &&
+         количествоПрыжков == 0 &&
+         Time.time >= времяПоследнегоРешения + задержкаМеждуРешениями)
+{
+    Debug.Log("ИИ обнаружил препятствие — первый прыжок!");
+
+    ПопытатьсяПрыгнуть();
+
+    времяПоследнегоРешения = Time.time;
+}
+}
 
     void ПопытатьсяПрыгнуть()
     {
@@ -59,10 +152,12 @@ public class DinoController : MonoBehaviour
 
             if (количествоПрыжков == 1)
             {
-                силаТекущегоПрыжка = силаПрыжка * множительВторогоПрыжка;
+                силаТекущегоПрыжка =
+                    силаПрыжка * множительВторогоПрыжка;
             }
 
-            физика.linearVelocity = new Vector2(0, силаТекущегоПрыжка);
+            физика.linearVelocity =
+                new Vector2(0, силаТекущегоПрыжка);
 
             количествоПрыжков++;
 
@@ -111,9 +206,12 @@ public class DinoController : MonoBehaviour
             {
                 if (частицыПриземления != null)
                 {
-                    ContactPoint2D точкаСтолкновения = столкновение.GetContact(0);
+                    ContactPoint2D точкаСтолкновения =
+                        столкновение.GetContact(0);
 
-                    частицыПриземления.transform.position = точкаСтолкновения.point;
+                    частицыПриземления.transform.position =
+                        точкаСтолкновения.point;
+
                     частицыПриземления.Play();
                 }
 
@@ -148,7 +246,8 @@ public class DinoController : MonoBehaviour
 
         if (объектМузыки != null)
         {
-            AudioSource музыка = объектМузыки.GetComponent<AudioSource>();
+            AudioSource музыка =
+                объектМузыки.GetComponent<AudioSource>();
 
             if (музыка != null)
             {
@@ -161,7 +260,8 @@ public class DinoController : MonoBehaviour
 
         аниматор.enabled = false;
 
-        SpriteRenderer спрайтКотика = GetComponent<SpriteRenderer>();
+        SpriteRenderer спрайтКотика =
+            GetComponent<SpriteRenderer>();
 
         if (спрайтКотика != null)
         {
@@ -170,7 +270,9 @@ public class DinoController : MonoBehaviour
 
         if (анимацияСмерти != null)
         {
-            анимацияСмерти.transform.position = transform.position;
+            анимацияСмерти.transform.position =
+                transform.position;
+
             анимацияСмерти.gameObject.SetActive(true);
             анимацияСмерти.НачатьПадение();
         }

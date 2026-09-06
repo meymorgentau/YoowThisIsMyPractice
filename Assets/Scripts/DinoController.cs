@@ -3,6 +3,8 @@ using System.Collections;
 
 public class DinoController : MonoBehaviour
 {
+    public static bool автоматическийРежим = false;
+
     [Header("Настройки прыжка")]
     public float силаПрыжка = 10f;
 
@@ -43,7 +45,7 @@ public class DinoController : MonoBehaviour
         if (проигрыш)
             return;
 
-        if (Input.GetMouseButtonDown(0))
+        if (!автоматическийРежим && Input.GetMouseButtonDown(0))
         {
             ПопытатьсяПрыгнуть();
         }
@@ -66,13 +68,11 @@ public class DinoController : MonoBehaviour
 
             наЗемле = false;
 
-            // Проигрываем звук прыжка
             if (звукПрыжка != null)
             {
                 звукПрыжка.Play();
             }
 
-            // При втором прыжке дополнительно проигрываем мяуканье
             if (количествоПрыжков == 2)
             {
                 if (звукМяу != null)
@@ -81,11 +81,9 @@ public class DinoController : MonoBehaviour
                 }
             }
 
-            // Переключаем анимацию на прыжок
             аниматор.SetBool("Бежит", false);
             аниматор.SetBool("Прыгает", true);
 
-            // Если это второй прыжок — включаем его анимацию
             if (количествоПрыжков == 2)
             {
                 аниматор.SetBool("ВторойПрыжок", true);
@@ -98,21 +96,17 @@ public class DinoController : MonoBehaviour
         if (проигрыш)
             return;
 
-        // Столкновение с землёй
         if (столкновение.gameObject.name == "Ground")
         {
-            // Проверяем, действительно ли котик прыгал
             bool былПрыжок = количествоПрыжков > 0;
 
             наЗемле = true;
             количествоПрыжков = 0;
 
-            // Возвращаем анимацию бега
             аниматор.SetBool("Прыгает", false);
             аниматор.SetBool("ВторойПрыжок", false);
             аниматор.SetBool("Бежит", true);
 
-            // Частицы и звук только после прыжка
             if (былПрыжок)
             {
                 if (частицыПриземления != null)
@@ -130,13 +124,11 @@ public class DinoController : MonoBehaviour
             }
         }
 
-        // Столкновение с кактусом
         if (столкновение.gameObject.CompareTag("Cactus"))
         {
             НачатьПроигрыш();
         }
 
-        // Столкновение с птицей
         if (столкновение.gameObject.CompareTag("Bird"))
         {
             НачатьПроигрыш();
@@ -147,13 +139,11 @@ public class DinoController : MonoBehaviour
     {
         проигрыш = true;
 
-        // Проигрываем звук столкновения
         if (звукУдара != null)
         {
             звукУдара.Play();
         }
 
-        // Останавливаем фоновую музыку
         GameObject объектМузыки = GameObject.Find("Музыка");
 
         if (объектМузыки != null)
@@ -166,23 +156,18 @@ public class DinoController : MonoBehaviour
             }
         }
 
-        // Останавливаем физику котика
         физика.linearVelocity = Vector2.zero;
         физика.simulated = false;
 
-        // Останавливаем его обычную анимацию
         аниматор.enabled = false;
 
-        // Получаем SpriteRenderer котика
         SpriteRenderer спрайтКотика = GetComponent<SpriteRenderer>();
 
-        // Скрываем обычного котика
         if (спрайтКотика != null)
         {
             спрайтКотика.enabled = false;
         }
 
-        // Показываем картинку смерти
         if (анимацияСмерти != null)
         {
             анимацияСмерти.transform.position = transform.position;
@@ -190,7 +175,6 @@ public class DinoController : MonoBehaviour
             анимацияСмерти.НачатьПадение();
         }
 
-        // Через небольшую задержку показываем меню проигрыша
         StartCoroutine(ПоказатьПроигрыш());
     }
 
